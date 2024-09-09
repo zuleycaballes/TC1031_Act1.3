@@ -4,11 +4,31 @@
 
 using namespace std;
 
-// Compara dos objetos de clase Datos. Compara los atributos de UBI de los objetos y los ordena en menor y mayor. 
-// En el caso de que los atributos de UBI sean iguales en ambos objetos, pasa a comparar los atributos de fecha.
+/*
+Compara dos objetos de clase Datos. Compara los atributos de UBI
+de los objetos y losordena en menor y mayor. 
+En el caso de que los atributos de UBI sean iguales en ambos objetos, 
+pasa a comparar los atributos de fecha.
+Complejidad: O(1)
+*/
 bool compararDatos(const Datos& a, const Datos& b) {
+// Comparar primero por UBI
     if (a.ubi != b.ubi) return a.ubi < b.ubi;
-    return a.fecha < b.fecha;
+
+    // Extraer día, mes y año de la fecha para 'a'
+    int dayA = stoi(a.fecha.substr(0, 2));
+    int monthA = stoi(a.fecha.substr(3, 2));
+    int yearA = stoi(a.fecha.substr(6, 4));
+
+    // Extraer día, mes y año de la fecha para 'b'
+    int dayB = stoi(b.fecha.substr(0, 2));
+    int monthB = stoi(b.fecha.substr(3, 2));
+    int yearB = stoi(b.fecha.substr(6, 4));
+
+    // Comparar por año, mes y día
+    if (yearA != yearB) return yearA < yearB;
+    if (monthA != monthB) return monthA < monthB;
+    return dayA < dayB;
 }
 
 // Función para combinar dos subarreglos ordenados
@@ -49,11 +69,13 @@ void merge(vector<Datos>& arr, int l, int m, int r) {
     }
 }
 
-/*
-Función de ordenamiento merge sort
+
+/*Función de ordenamiento merge sort
+Divide, de forma recursiva, al vector en mitades sucesivamente hasta llegar
+a subvectores con un solo elemento; después, utiliza la función merge para
+combinar estas mitades y ordenarlas respecto a su valor y así reconstruir al 
+vector original de manera ordenada. Recibe un vector arr y el rango de este (l y r).
 Complejidad: O(n log n)
-Divide, de forma recursiva, al vector en mitades sucesivamente hasta llegar a subvectores con un solo elemento; después, utiliza la función merge para
-combinar estas mitades y ordenarlas respecto a su valor y así reconstruir al vector original de manera ordenada. Recibe un vector arr y el rango de este (l y r).
 */
 void mergeSort(vector<Datos>& arr, int l, int r) {
     if (l < r) {
@@ -66,8 +88,9 @@ void mergeSort(vector<Datos>& arr, int l, int r) {
 
 /*
 Función principal para ordenar el vector de buques
+Esta función de tipo void implementa un algoritmo de ordenamiento por mezcla (merge sort). 
+Recibe el vector buques y el rango de este (left y right).
 Complejidad: O(n log n)
-Esta función de tipo void implementa un algoritmo de ordenamiento por mezcla (merge sort). Recibe el vector buques y el rango de este (left y right).
 */
 void ordenarBuque(vector<Datos>& buques, int left, int right) {
     mergeSort(buques, left, right);
